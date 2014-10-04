@@ -7,5 +7,9 @@ Description: a visualized package for china Weather
 Depends:
     R (>= 3.1.1)
 License: GPL-2
-LazyData: true
 Date: 2014-09-28
+Imports:
+    RCurl,
+    XML,
+    maptools,
+    RColorBrewer
