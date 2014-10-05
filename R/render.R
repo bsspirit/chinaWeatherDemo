@@ -1,17 +1,3 @@
-#' load China Map data only once.
-#'
-#' @return SpatialPolygonsDataFrame china map
-#' @keywords map 
-#' @export
-#' @examples
-#' \dontrun{
-#'    loadChinaMap()
-#' }
-loadChinaMap<-function(){
-  library(maptools)
-  data(chinaMap)
-}
-
 #' match the color with ADCODE99.
 #'
 #' @param temp the temperature  
@@ -41,6 +27,7 @@ drawBackground<-function(title,date,lang='zh'){
 
 #' Draw the description.
 #' 
+#' @importFrom stringi stri_unescape_unicode
 #' @param data daily data
 #' @param temp the temperature
 #' @param lang the language zh or en 
@@ -50,7 +37,8 @@ drawDescription<-function(data,temp,lang='zh'){
   y<-17-ifelse(rows%%7==0,7,rows%%7)*3
   fontCols<-c("#08306B","#000000","#800026")[findInterval(temp,c(0,30))+1]
   if(lang=='zh'){
-    text(x,y,paste(data$zh,temp),col=fontCols)
+    txt<-stri_unescape_unicode(data$zh)
+    text(x,y,paste(txt,temp),col=fontCols)
   }else{
     text(x,y,paste(data$en,temp),col=fontCols)  
   }
@@ -71,6 +59,9 @@ drawLegend<-function(breaks,colors){
 
 #' Draw temperature picture.
 #' 
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom stringi stri_unescape_unicode
+#' @import maptools
 #' @param data daily data
 #' @param lang language
 #' @param type low or high
@@ -79,25 +70,24 @@ drawLegend<-function(breaks,colors){
 #' @param path image output position
 #' @export
 drawTemperature<-function(data,lang='zh',type='high',date=Sys.time(),output=FALSE,path=''){
-  if(length(which(ls()=="chinaMap"))!=1){
-    loadChinaMap()
-  }
-  
-  library("RColorBrewer")
   colors <- c(rev(brewer.pal(9,"Blues")),"#ffffef",brewer.pal(9,"YlOrRd"),"#500000")
   breaks=seq(-36,44,4)
   
   if(type=='high') {
     temp<-data$high
-    title<-ifelse(lang=='zh', "中国各省白天气温", "Daytime Temperature")
     ofile<-paste(format(date,"%Y%m%d"),"_day.png",sep="")
   }else{
     temp<-data$low 
-    title<-ifelse(lang=='zh', "中国各省夜间气温", "Nighttime Temperature")
     ofile<-paste(format(date,"%Y%m%d"),"_night.png",sep="")
   }
   
-  if(output)png(file=paste(path,ofile,sep=''),width=600,height=600)
+  if(lang=='zh'){
+    title<-stri_unescape_unicode(props[which(props$key=='high'),]$zh)
+  }else{
+    title<-props[which(props$key=='high'),]$en
+  }
+  
+  if(output)png(filename=paste(path,ofile,sep=''),width=600,height=600)
   
   layout(matrix(data=c(1,2),nrow=1,ncol=2),widths=c(8,1),heights=c(1,2))
   par(mar=c(0,0,3,10),oma=c(0.2,0.2,0.2,0.2),mex=0.3)

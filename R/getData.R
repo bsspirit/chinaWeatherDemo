@@ -1,5 +1,7 @@
 #' Get weather data from Yahoo openAPI.
 #'
+#' @importFrom RCurl getURL
+#' @importFrom XML xmlTreeParse getNodeSet xmlGetAttr
 #' @param woeid input a yahoo woeid
 #' @return data.frame weather data
 #' @keywords weather 
@@ -10,11 +12,8 @@
 #'  getWeatherFromYahoo(2151330)
 #' }
 getWeatherFromYahoo<-function(woeid=2151330){
-  library(RCurl)
-  library(XML)
-  
   url<-paste('http://weather.yahooapis.com/forecastrss?w=',woeid,'&u=c',sep="")
-  doc = xmlTreeParse(getURL(url),useInternal = TRUE)
+  doc = xmlTreeParse(getURL(url),useInternalNodes=TRUE)
   
   ans<-getNodeSet(doc, "//yweather:atmosphere")
   humidity<-as.numeric(sapply(ans, xmlGetAttr, "humidity"))
@@ -36,7 +35,6 @@ getWeatherFromYahoo<-function(woeid=2151330){
 #' Get one city weather Data.
 #'
 #' @param en input a English city name
-#' @param zh input a Chinese city name
 #' @param src input data source
 #' @return data.frame weather data
 #' @keywords weather 
@@ -45,9 +43,8 @@ getWeatherFromYahoo<-function(woeid=2151330){
 #' \dontrun{
 #'  getWeatherByCity()
 #'  getWeatherByCity(en="beijing")
-#'  getWeatherByCity(zh="上海")
 #' }
-getWeatherByCity<-function(en="beijing",zh=NULL,src="yahoo"){
+getWeatherByCity<-function(en="beijing",src="yahoo"){
   woeid<-getWOEIDByCity(en)
   if(src=="yahoo"){
     return(getWeatherFromYahoo(woeid))

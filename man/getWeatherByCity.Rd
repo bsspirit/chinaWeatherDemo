@@ -3,12 +3,10 @@
 \alias{getWeatherByCity}
 \title{Get one city weather Data.}
 \usage{
-getWeatherByCity(en = "beijing", zh = NULL, src = "yahoo")
+getWeatherByCity(en = "beijing", src = "yahoo")
 }
 \arguments{
 \item{en}{input a English city name}
-
-\item{zh}{input a Chinese city name}
 
 \item{src}{input data source}
 }
@@ -22,7 +20,6 @@ Get one city weather Data.
 \dontrun{
  getWeatherByCity()
  getWeatherByCity(en="beijing")
- getWeatherByCity(zh="上海")
 }
 }
 \keyword{weather}

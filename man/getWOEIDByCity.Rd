@@ -3,12 +3,10 @@
 \alias{getWOEIDByCity}
 \title{Get WOEID of Yahoo By City Name}
 \usage{
-getWOEIDByCity(en = "beijing", zh = NULL)
+getWOEIDByCity(en = "beijing")
 }
 \arguments{
 \item{en}{input a English city name}
-
-\item{zh}{input a Chinese city name}
 }
 \value{
 integer WOEID
@@ -20,7 +18,6 @@ Get WOEID of Yahoo By City Name
 \dontrun{
  getWOEIDByCity()
  getWOEIDByCity(en="beijing")
- getWOEIDByCity(zh='上海')
 }
 }
 \keyword{WOEID}

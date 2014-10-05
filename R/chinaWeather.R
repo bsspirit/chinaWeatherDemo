@@ -16,7 +16,6 @@ filename<-function(date=Sys.time()){
 #' Get WOEID of Yahoo By City Name
 #'
 #' @param en input a English city name
-#' @param zh input a Chinese city name
 #' @return integer WOEID
 #' @keywords WOEID
 #' @export
@@ -24,12 +23,8 @@ filename<-function(date=Sys.time()){
 #' \dontrun{
 #'  getWOEIDByCity()
 #'  getWOEIDByCity(en="beijing")
-#'  getWOEIDByCity(zh='上海')
 #' }
-getWOEIDByCity<-function(en="beijing",zh=NULL){
-  if(!is.null(zh) && !is.na(zh) ){
-    return(WOEID$woeid[which(WOEID$zh==zh)])
-  }
+getWOEIDByCity<-function(en="beijing"){
   return(WOEID$woeid[which(WOEID$en==en)])
 }
 
